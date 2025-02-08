@@ -2,7 +2,7 @@
 This repository contains publicly available code snippets & scripts. 
 
 ## Aure ARM script - Create a free Azure App Service & Azure SQL database in a single deployment 🐱‍🏍
-You can deploy [this script](../azure/azure_arm_free_app_and_database.json) directly using the Azure Portal: 
+You can deploy [this script](./azure/azure_arm_free_app_and_database.json) directly using the Azure Portal: 
 1. Navigate to: [Deploy a custom template](https://portal.azure.com/#create/Microsoft.Template)  
 2. Load file or 'Build your own' and copy paste
 3. Create (or choose) Resource Group
