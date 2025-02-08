@@ -1,0 +1,213 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "studentNumber": {
+      "type": "String",
+      "metadata": {
+        "description": "The student number to be used as a prefix for resource names"
+      }
+    },
+    "sqlAdminUsername": {
+      "type": "String",
+      "metadata": {
+        "description": "The SQL administrator user name (cannot be sa or admin)"
+      }
+    },
+    "sqlAdminPassword": {
+      "type": "SecureString",
+      "metadata": {
+        "description": "The SQL administrator password (keep this)"
+      }
+    },
+    "allowedSqlIpAddress": {
+      "type": "String",
+      "metadata": {
+        "description": "The IP address (besides Azure Resources) you would like to allow to connect to the SQL database"
+      }
+    }
+  },
+  "variables": {
+    "region": "northeurope",
+    "appServiceName": "[concat('avansict', parameters('studentNumber'))]",
+    "appServicePlanName": "[concat('avansict', parameters('studentNumber'), 'plan')]",
+    "sqlDatabaseName": "[concat('db', parameters('studentNumber'))]",
+    "sqlServerName": "[concat('avansict', parameters('studentNumber'))]",
+    "linuxFxVersion": "DOTNETCORE|9.0",
+    "avansIpAddress": "145.48.131.113"
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Web/serverfarms",
+      "apiVersion": "2018-11-01",
+      "name": "[variables('appServicePlanName')]",
+      "location": "[variables('region')]",
+      "kind": "linux",
+      "properties": {
+        "name": "[variables('appServicePlanName')]",
+        "workerSize": 0,
+        "workerSizeId": 0,
+        "numberOfWorkers": 1,
+        "zoneRedundant": false,
+        "reserved": true
+      },
+      "sku": {
+        "Tier": "Free",
+        "Name": "F1"
+      }
+    },
+    {
+      "type": "Microsoft.Web/sites",
+      "apiVersion": "2021-02-01",
+      "name": "[variables('appServiceName')]",
+      "location": "[variables('region')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/serverfarms', variables('appServicePlanName'))]"
+      ],
+      "properties": {
+        "name": "[variables('appServiceName')]",
+        "siteConfig": {
+          "appSettings": [
+            {
+              "name": "WEBSITE_WEBDEPLOY_USE_SCM",
+              "value": "true"
+            }
+          ],
+          "metadata": [
+            {
+              "name": "CURRENT_STACK",
+              "value": "dotnet"
+            }
+          ],
+          "linuxFxVersion": "[variables('linuxFxVersion')]",
+          "phpVersion": "OFF"
+        },
+        "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('appServicePlanName'))]"
+      }
+    },
+    {
+      "type": "Microsoft.Web/sites/basicPublishingCredentialsPolicies",
+      "apiVersion": "2022-09-01",
+      "name": "[concat(variables('appServiceName'), '/scm')]",
+      "properties": {
+        "allow": true
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/Sites', variables('appServiceName'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/basicPublishingCredentialsPolicies",
+      "apiVersion": "2022-09-01",
+      "name": "[concat(variables('appServiceName'), '/ftp')]",
+      "properties": {
+        "allow": true
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/Sites', variables('appServiceName'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Sql/servers",
+      "apiVersion": "2021-05-01-preview",
+      "name": "[variables('sqlServerName')]",
+      "location": "[variables('region')]",
+      "properties": {
+        "administratorLogin": "[parameters('sqlAdminUsername')]",
+        "administratorLoginPassword": "[parameters('sqlAdminPassword')]",
+        "publicNetworkAccess": "Enabled",
+        "version": "12.0",
+        "minimalTlsVersion": "1.2"
+      },
+      "resources": [
+        {
+          "apiVersion": "2023-05-01-preview",
+          "dependsOn": [
+            "[resourceId('Microsoft.Sql/servers', variables('sqlServerName'))]"
+          ],
+          "location": "[variables('region')]",
+          "tags": {},
+          "name": "[variables('sqlDatabaseName')]",
+          "properties": {
+            "collation": "SQL_Latin1_General_CP1_CI_AS",
+            "maxSizeBytes": 34359738368,
+            "sampleName": "",
+            "zoneRedundant": false,
+            "licenseType": "",
+            "readScale": "",
+            "highAvailabilityReplicaCount": 0,
+            "minCapacity": 0.5,
+            "autoPauseDelay": 60,
+            "requestedBackupStorageRedundancy": "Local",
+            "isLedgerOn": false,
+            "availabilityZone": "",
+            "useFreeLimit": true,
+            "freeLimitExhaustionBehavior": "AutoPause"
+          },
+          "sku": {
+            "name": "GP_S_Gen5_2",
+            "tier": "GeneralPurpose"
+          },
+          "type": "databases"
+        },
+        {
+          "apiVersion": "2021-11-01",
+          "dependsOn": [
+            "[concat('Microsoft.Sql/servers/', variables('sqlServerName'))]"
+          ],
+          "location": "[variables('region')]",
+          "name": "AllowAllWindowsAzureIps",
+          "properties": {
+            "endIpAddress": "0.0.0.0",
+            "startIpAddress": "0.0.0.0"
+          },
+          "type": "firewallrules"
+        },
+        {
+          "apiVersion": "2021-11-01",
+          "dependsOn": [
+            "[concat('Microsoft.Sql/servers/', variables('sqlServerName'))]"
+          ],
+          "location": "[variables('region')]",
+          "name": "Home IP address",
+          "properties": {
+            "endIpAddress": "[parameters('allowedSqlIpAddress')]",
+            "startIpAddress": "[parameters('allowedSqlIpAddress')]"
+          },
+          "type": "firewallrules"
+        },
+        {
+          "apiVersion": "2021-11-01",
+          "dependsOn": [
+            "[concat('Microsoft.Sql/servers/', variables('sqlServerName'))]"
+          ],
+          "location": "[variables('region')]",
+          "name": "Avans IP address",
+          "properties": {
+            "endIpAddress": "[variables('avansIpAddress')]",
+            "startIpAddress": "[variables('avansIpAddress')]"
+          },
+          "type": "firewallrules"
+        }
+      ]
+    }
+  ],
+  "outputs": {
+    "azure_webapp_url": {
+      "type": "String",
+      "value": "[reference(resourceId('Microsoft.Web/sites', variables('appServiceName')), '2018-02-01').defaultHostName]"
+    },
+    "azure_webapp_name": {
+      "type": "String",
+      "value": "[variables('appServiceName')]"
+    },
+    "azure_webapp_publish_username": {
+      "type": "String",
+      "value": "[list(concat('Microsoft.Web/sites/', variables('appServiceName') ,'/config/publishingcredentials'), '2016-08-01').properties.publishingUserName]"
+    },
+    "azure_webapp_publish_password": {
+      "type": "String",
+      "value": "[list(concat('Microsoft.Web/sites/', variables('appServiceName') ,'/config/publishingcredentials'), '2016-08-01').properties.publishingPassword]"
+    }
+  }
+}
