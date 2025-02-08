@@ -1,2 +1,2 @@
-# ICT1.3-2D-Graphics-Secure-Communication-SecureBackend-CodeSnippets
-Publicly provided code snippets for the module ICT1.3 2D Graphics Secure Communication
+# ICT1.3 - 2D Graphics & Secure Communication - Secure Backend - Code Snippets
+This repository contains publicly available code snippets & scripts. 
