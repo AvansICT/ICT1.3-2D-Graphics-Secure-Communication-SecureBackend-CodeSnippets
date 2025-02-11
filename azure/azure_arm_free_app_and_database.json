@@ -34,7 +34,8 @@
     "sqlDatabaseName": "[concat('db', parameters('studentNumber'))]",
     "sqlServerName": "[concat('avansict', parameters('studentNumber'))]",
     "linuxFxVersion": "DOTNETCORE|9.0",
-    "avansIpAddress": "145.48.131.113"
+    "surfnetIpRangeStart": "145.48.0.0",
+    "surfnetIpRangeEnd": "145.49.255.255"
   },
   "resources": [
     {
@@ -182,10 +183,10 @@
             "[concat('Microsoft.Sql/servers/', variables('sqlServerName'))]"
           ],
           "location": "[variables('region')]",
-          "name": "Avans IP address",
+          "name": "Avans outbound IP addresses (Surfnet)",
           "properties": {
-            "endIpAddress": "[variables('avansIpAddress')]",
-            "startIpAddress": "[variables('avansIpAddress')]"
+            "startIpAddress": "[variables('surfnetIpRangeStart')]",
+            "endIpAddress": "[variables('surfnetIpRangeEnd')]"
           },
           "type": "firewallrules"
         }
