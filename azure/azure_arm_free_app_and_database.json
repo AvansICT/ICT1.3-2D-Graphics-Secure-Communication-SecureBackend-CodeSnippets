@@ -23,7 +23,7 @@
     "homeIpAddress": {
       "type": "String",
       "metadata": {
-        "description": "The IP address (besides Azure Resources) you would like to allow to connect to the SQL database"
+        "description": "The IP address (besides Azure Resources & Avans Surfnet) you would like to allow to connect to the SQL database"
       }
     }
   },
