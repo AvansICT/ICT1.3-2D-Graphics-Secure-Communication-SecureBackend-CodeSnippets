@@ -17,3 +17,7 @@ After the deployment has succeeded, navigate to output parameters and save these
 #### Notes  
 - The free **SQL Server database** is **not available** in `westeurope`, so the script defaults to `northeurope`.  
 - The SQL Server **uses SQL Authentication only**, as setting up Entra ID authentication via ARM scripts is not straightforward.  
+
+## Create additional SQL user
+Execute [this script](./sql/create_database_user.sql) on the Azure SQL Database to create a contained SQL database user with only read/write access
+
