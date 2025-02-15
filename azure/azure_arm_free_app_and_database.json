@@ -20,7 +20,7 @@
         "description": "The SQL administrator password (keep this)"
       }
     },
-    "allowedSqlIpAddress": {
+    "homeIpAddress": {
       "type": "String",
       "metadata": {
         "description": "The IP address (besides Azure Resources) you would like to allow to connect to the SQL database"
@@ -172,8 +172,8 @@
           "location": "[variables('region')]",
           "name": "Home IP address",
           "properties": {
-            "endIpAddress": "[parameters('allowedSqlIpAddress')]",
-            "startIpAddress": "[parameters('allowedSqlIpAddress')]"
+            "endIpAddress": "[parameters('homeIpAddress')]",
+            "startIpAddress": "[parameters('homeIpAddress')]"
           },
           "type": "firewallrules"
         },
