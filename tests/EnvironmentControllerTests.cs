@@ -26,38 +26,45 @@ namespace ProjectMap.Tests
         [TestMethod]
         public async Task Add_AddEnvinromentToUserWithNoEnviroments_ReturnsCreatedEnvironment()
         {
-            // Arrange
+            // ARRANGE
+
+            // We create some fake data
             var userId = Guid.NewGuid().ToString();
             var newEnvironment = GenerateRandomEnvironment("new environment");
+            var existingUserEnvironments = GenerateRandomEnvironments(0);
 
+            // We create some mocks
             var environmentRepository = new Mock<IEnvironmentRepository>();
             var objectRepository = new Mock<IObjectRepository>();
             var userRepository = new Mock<IUserRepository>();
 
-            var existingUserEnvironments = GenerateRandomEnvironments(0);
+            // We do not setup every method in our mock, only the methods are called  
+            // from the unit under test (in this case: environmentController.Add).
 
+            // Return the fake data when the current user is fetched
             userRepository.Setup(x => x.GetCurrentUserId()).Returns(userId);
 
-            // When these methods need to be simulated since they're called
-            // from the unit that we're testing (which is environmentController.Add)
+            // Return the fake data when the environments owned by the current user are fetched
             environmentRepository.Setup(x => x.ReadByOwnerUserId(userId)).ReturnsAsync(existingUserEnvironments);
-            
-            // My repository returns an object, so we need to set this up as well
-            environmentRepository.Setup(x => x.InsertAsync(newEnvironment)).ReturnsAsync(newEnvironment);
-    
+
+            // Create the controller            
             var environmentController = new EnvironmentsController(environmentRepository.Object, objectRepository.Object, userRepository.Object);
 
-            // Act
+            // ACT
             var response = await environmentController.AddAsync(newEnvironment);
 
-            // The return result type of the controller method is Task<ActionResult<Environment2D>>
-            // to test the outcome op the controller methode we need to dissect
-            // this object. It contains a property .Value and a property .Result.
 
-            // First we assert if the ActionResult is an OkObjectResult and
-            // out the specific type of this generic type so we can use it later on
+            // ASSERT
 
-            // This code looks like the int.TryParse(input, out int value) used in 1.1
+            // The return type of the controller method is Task<ActionResult<Environment2D>>.  
+            // To test the outcome of the controller method, we need to dissect this object.  
+            // It contains a .Value property and a .Result property.  
+
+            // First, we assert whether the ActionResult is an OkObjectResult and  
+            // extract the specific type of this generic type so we can use it later on.  
+
+            // This approach is similar to using int.TryParse(input, out int value) in module 1.1.
+            // This assert will fail if another response type is used (e.g. BadRequestObjectResult, or an OkResult (without an object))
             Assert.IsInstanceOfType(response.Result, out OkObjectResult okObjectResult);
 
             // The OkObjectResult contains a value that is returned as the object to the client
