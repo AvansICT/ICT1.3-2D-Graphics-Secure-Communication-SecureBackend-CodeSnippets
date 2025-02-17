@@ -39,7 +39,7 @@ namespace ProjectMap.Tests
             var userRepository = new Mock<IUserRepository>();
 
             // We do not setup every method in our mock, only the methods are called  
-            // from the unit under test (in this case: environmentController.Add).
+            // from the unit under test (in this case: environmentController.AddAsync).
 
             // Return the fake data when the current user is fetched
             userRepository.Setup(x => x.GetCurrentUserId()).Returns(userId);
