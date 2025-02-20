@@ -9,7 +9,7 @@ This class contains the logic to retrieve the currently authenticated user from 
 - It implements `IUserRepository`, allowing you to mock authentication logic in unit tests.  
 
 ### `Program.cs`  
-Add the provided snippet to `Program.cs` to configure your dependency injection container.  
+Add the provided snippet to `Program.cs` to configure your dependency injection container. Not doing this will result in error at startup.
 
 ## Implementation Steps  
 
