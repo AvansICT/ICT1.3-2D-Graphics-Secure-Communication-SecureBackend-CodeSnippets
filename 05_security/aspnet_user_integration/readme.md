@@ -15,6 +15,6 @@ Add the provided snippet to `Program.cs` to configure your dependency injection 
 
 1. Add the `IAuthenticationService`, `AspNetIdentityAuthenticationService` to a folder named `Services` in your WebApi project. 
 2. Change the `Program.cs` to register this service into the Dependency Injection container.
-3. Inject `IAuthenticationService` into the `ApiController` where you need access to the current user.  
+3. Inject `IAuthenticationService` into the `ApiController` where you need access to the currently authenticated user. 
 4. Call `GetCurrentAuthenticatedUserId()` to retrieve the currently authenticated user ID.  
-5. Use the retrieved user ID to filter or extend your queries.  
+5. Use the retrieved user ID to filter or extend your queries and logic.  
