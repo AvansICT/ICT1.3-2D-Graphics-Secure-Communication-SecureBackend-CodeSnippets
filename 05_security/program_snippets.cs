@@ -6,7 +6,7 @@ builder.Services.AddAuthorization();
 builder.Services.AddIdentityApiEndpoints<IdentityUser>(options =>
 {
     options.User.RequireUniqueEmail = true;
-    options.Password.RequiredLength = 512;
+    options.Password.RequiredLength = 50;
 })
 .AddRoles<IdentityRole>()
 .AddDapperStores(options =>
