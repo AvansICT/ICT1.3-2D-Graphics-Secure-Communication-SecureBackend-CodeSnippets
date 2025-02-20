@@ -6,6 +6,9 @@
 # dotenv files
 .env
 
+# this is not a solution
+.sln
+
 # User-specific files
 *.rsuser
 *.suo
