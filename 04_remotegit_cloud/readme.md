@@ -1,7 +1,4 @@
-# ICT1.3 - 2D Graphics & Secure Communication - Secure Backend - Code Snippets
-This repository contains publicly available code snippets & scripts. 
-
-## Aure ARM script - Create a free Azure App Service & Azure SQL database in a single deployment 🐱‍🏍
+# Aure ARM script - Create a free Azure App Service & Azure SQL database in a single deployment 🐱‍🏍
 You can deploy [this script](./azure/azure_arm_free_app_and_database.json) directly using the Azure Portal: 
 1. Navigate to: [Deploy a custom template](https://portal.azure.com/#create/Microsoft.Template)  
 2. Load file or 'Build your own' and copy paste
@@ -18,7 +15,7 @@ After the deployment has succeeded, navigate to output parameters and save these
 - The free **SQL Server database** is **not available** in `westeurope`, so the script defaults to `northeurope`.  
 - The SQL Server **uses SQL Authentication only**, as setting up Entra ID authentication through ARM templates is not straightforward.  
 
-## GitHub Workflow Simplified
+# GitHub Workflow Simplified
 This scripts takes the outputs from the Azure ARM template and the project name and uses it to create a simple CI/CD workflow through GitHub actions.
 
 1. Add [this script](./github/github_workflow_simplified.yaml) in the Git repository under `/.github/workflows`
