@@ -1,3 +1,4 @@
+/*  ⚠⚠⚠ This is not a full Program.cs, it only contains the snippets used to setup Identity Framework. Use the snippets in your own Program.cs ⚠⚠⚠ */
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,6 +22,6 @@ var app = builder.Build();
 // ⏬⏬⏬ This code should be used belowd your  var app = builder.Build(); code ⏬⏬⏬
 app.UseAuthorization();
 app.MapGroup("/account").MapIdentityApi<IdentityUser>();
-app.MapControllers().RequireAuthorization();
+app.MapControllers().RequireAuthorization(); // 👈 Replace your current app.MapControllers() with this one. 
 
 app.Run();
