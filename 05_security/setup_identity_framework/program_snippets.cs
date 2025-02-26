@@ -14,13 +14,11 @@ builder.Services.AddIdentityApiEndpoints<IdentityUser>(options =>
     options.ConnectionString = sqlConnectionString;
 });
 
-
+// ⏫⏫⏫ This code should be used above your  var app = builder.Build(); code ⏫⏫⏫
 
 var app = builder.Build();
 
-
-
-
+// ⏬⏬⏬ This code should be used belowd your  var app = builder.Build(); code ⏬⏬⏬
 app.UseAuthorization();
 app.MapGroup("/account").MapIdentityApi<IdentityUser>();
 app.MapControllers().RequireAuthorization();
