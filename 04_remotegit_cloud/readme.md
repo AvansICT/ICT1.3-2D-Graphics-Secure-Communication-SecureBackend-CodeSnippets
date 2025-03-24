@@ -25,7 +25,7 @@ The following secrets are required to run this worflow
 * AZURE_WEBAPP_NAME 👉 The name of the web application in Azure (output from the ARM template)
 * AZURE_WEBAPP_PUBLISH_PASSWORD 👉 The publishing user password (output from the ARM template)
 * AZURE_WEBAPP_PUBLISH_USERNAME 👉 The publishing user name (output from the ARM template)
-* WEBAPI_PROJECT_NAME 👉 The name of the project needed to publish
+* WEBAPI_PROJECT_NAME 👉 The foldername (usually this corresponds with the project name) where the WebAPI project files are in
 
 The secrets are used to construct a publishing profile. Unfortunately it is not possible to extract the full publish profile through the ARM template.
 
