@@ -22,13 +22,13 @@ The following secrets are required to run this worflow
 * AZURE_WEBAPP_NAME 👉 The name of the web application in Azure (output from the ARM template)
 * AZURE_WEBAPP_PUBLISH_PASSWORD 👉 The publishing user password (output from the ARM template)
 * AZURE_WEBAPP_PUBLISH_USERNAME 👉 The publishing user name (output from the ARM template)
-* WEBAPI_PROJECT_FOLDER 👉 The name of the project needed to publish
+* WEBAPI_PROJECT_FOLDER 👉 The name of the project that needs to be published
 
 The secrets are used to construct a publishing profile. Unfortunately it is not possible to extract the full publish profile through the ARM template.
 
 ** Notes **
 * It checks if the secrets are available, if not, cancels the flow
-* It defaults to DOTNET_CORE_VERSION: 10.0.x 
+* It defaults to DOTNET_CORE_VERSION: 10.0.x so it expects a .NET 10 project
 
 ## Create additional SQL user
 Execute [this script](./sql/create_database_user.sql) on the Azure SQL Database to create a contained SQL database user with only read/write access.
