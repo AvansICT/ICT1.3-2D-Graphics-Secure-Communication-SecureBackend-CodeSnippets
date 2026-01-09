@@ -15,23 +15,20 @@ After the deployment has succeeded, navigate to output parameters and save these
 - The free **SQL Server database** is **not available** in `westeurope`, so the script defaults to `northeurope`.  
 - The SQL Server **uses SQL Authentication only**, as setting up Entra ID authentication through ARM templates is not straightforward.  
 
-# GitHub Workflow Simplified
-This scripts takes the outputs from the Azure ARM template and the project name and uses it to create a simple CI/CD workflow through GitHub actions.
-
-1. Add [this script](./github/github_workflow_simplified.yaml) in the Git repository under `/.github/workflows`
-2. Enter the ARM outputs as repository secrets in Github
+# GitHub Workflow Demystified
+The [GitHub workflow in the starter template repository](https://github.com/AvansICT/ICT1.3-2D-Graphics-Secure-Communication-SecureBackend-StarterTemplate/blob/main/.github/workflows/github_workflow_simplified.yaml) takes the outputs from the Azure ARM template and the API project folder and uses it to create a simple CI/CD workflow through GitHub actions.
 
 The following secrets are required to run this worflow
 * AZURE_WEBAPP_NAME 👉 The name of the web application in Azure (output from the ARM template)
 * AZURE_WEBAPP_PUBLISH_PASSWORD 👉 The publishing user password (output from the ARM template)
 * AZURE_WEBAPP_PUBLISH_USERNAME 👉 The publishing user name (output from the ARM template)
-* WEBAPI_PROJECT_NAME 👉 The name of the project needed to publish
+* WEBAPI_PROJECT_FOLDER 👉 The name of the project needed to publish
 
 The secrets are used to construct a publishing profile. Unfortunately it is not possible to extract the full publish profile through the ARM template.
 
 ** Notes **
 * It checks if the secrets are available, if not, cancels the flow
-* It defaults to DOTNET_CORE_VERSION: 9.0.x but this is tested with .NET 8 projects as well
+* It defaults to DOTNET_CORE_VERSION: 10.0.x 
 
 ## Create additional SQL user
 Execute [this script](./sql/create_database_user.sql) on the Azure SQL Database to create a contained SQL database user with only read/write access.

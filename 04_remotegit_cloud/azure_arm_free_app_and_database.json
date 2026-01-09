@@ -33,7 +33,7 @@
     "appServicePlanName": "[concat('avansict', parameters('studentNumber'), 'plan')]",
     "sqlDatabaseName": "[concat('db', parameters('studentNumber'))]",
     "sqlServerName": "[concat('avansict', parameters('studentNumber'))]",
-    "linuxFxVersion": "DOTNETCORE|9.0",
+    "linuxFxVersion": "DOTNETCORE|10.0",
     "surfnetIpRangeStart": "145.48.0.0",
     "surfnetIpRangeEnd": "145.49.255.255"
   },
