@@ -12,7 +12,7 @@ You can deploy [this script](./azure/azure_arm_free_app_and_database.json) direc
 After the deployment has succeeded, navigate to output parameters and save these values. You need them later when you setup the GitHub Workflow.
 
 ** Notes **
-- The free **SQL Server database** is **not available** in `westeurope`, so the script defaults to `northeurope`.  
+- The free **SQL Server database** is **not available** in `westeurope`. Please choose a less congested region. Unfortunately there is no way to see what region experiences less congestion. Ask your teacher what region he or she has successfully made a deployment.
 - The SQL Server **uses SQL Authentication only**, as setting up Entra ID authentication through ARM templates is not straightforward.  
 
 # GitHub Workflow Demystified
