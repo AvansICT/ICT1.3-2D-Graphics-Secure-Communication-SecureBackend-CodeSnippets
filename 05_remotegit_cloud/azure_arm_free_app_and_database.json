@@ -28,7 +28,6 @@
     }
   },
   "variables": {
-    "region": "northeurope",
     "appServiceName": "[concat('avansict', parameters('studentNumber'))]",
     "appServicePlanName": "[concat('avansict', parameters('studentNumber'), 'plan')]",
     "sqlDatabaseName": "[concat('db', parameters('studentNumber'))]",
@@ -42,7 +41,7 @@
       "type": "Microsoft.Web/serverfarms",
       "apiVersion": "2018-11-01",
       "name": "[variables('appServicePlanName')]",
-      "location": "[variables('region')]",
+      "location": "[resourceGroup().location]",
       "kind": "linux",
       "properties": {
         "name": "[variables('appServicePlanName')]",
@@ -61,7 +60,7 @@
       "type": "Microsoft.Web/sites",
       "apiVersion": "2021-02-01",
       "name": "[variables('appServiceName')]",
-      "location": "[variables('region')]",
+      "location": "[resourceGroup().location]",
       "dependsOn": [
         "[resourceId('Microsoft.Web/serverfarms', variables('appServicePlanName'))]"
       ],
@@ -112,7 +111,7 @@
       "type": "Microsoft.Sql/servers",
       "apiVersion": "2021-05-01-preview",
       "name": "[variables('sqlServerName')]",
-      "location": "[variables('region')]",
+      "location": "[resourceGroup().location]",
       "properties": {
         "administratorLogin": "[parameters('sqlAdminUsername')]",
         "administratorLoginPassword": "[parameters('sqlAdminPassword')]",
@@ -126,7 +125,7 @@
           "dependsOn": [
             "[resourceId('Microsoft.Sql/servers', variables('sqlServerName'))]"
           ],
-          "location": "[variables('region')]",
+          "location": "[resourceGroup().location]",
           "tags": {},
           "name": "[variables('sqlDatabaseName')]",
           "properties": {
@@ -156,7 +155,7 @@
           "dependsOn": [
             "[concat('Microsoft.Sql/servers/', variables('sqlServerName'))]"
           ],
-          "location": "[variables('region')]",
+          "location": "[resourceGroup().location]",
           "name": "AllowAllWindowsAzureIps",
           "properties": {
             "endIpAddress": "0.0.0.0",
@@ -169,7 +168,7 @@
           "dependsOn": [
             "[concat('Microsoft.Sql/servers/', variables('sqlServerName'))]"
           ],
-          "location": "[variables('region')]",
+          "location": "[resourceGroup().location]",
           "name": "Home IP address",
           "properties": {
             "endIpAddress": "[parameters('homeIpAddress')]",
@@ -182,7 +181,7 @@
           "dependsOn": [
             "[concat('Microsoft.Sql/servers/', variables('sqlServerName'))]"
           ],
-          "location": "[variables('region')]",
+          "location": "[resourceGroup().location]",
           "name": "Avans outbound IP addresses (Surfnet)",
           "properties": {
             "startIpAddress": "[variables('surfnetIpRangeStart')]",
