@@ -25,6 +25,13 @@
       "metadata": {
         "description": "The IP address (besides Azure Resources & Avans Surfnet) you would like to allow to connect to the SQL database"
       }
+    },
+    "useFreeResources": {
+      "type": "Bool",
+      "defaultValue": true,
+      "metadata": {
+        "description": "Whether to deploy using free resources (Free tier for App Service and free limit for SQL Database limited to certain regions). If false, uses Shared B1 tier for the App Service and removes free Azure SQL limitations which means you can deploy in many more regions. "
+      }
     }
   },
   "variables": {
@@ -52,8 +59,8 @@
         "reserved": true
       },
       "sku": {
-        "Tier": "Free",
-        "Name": "F1"
+        "Tier": "[if(parameters('useFreeResources'), 'Free', 'Basic')]",
+        "Name": "[if(parameters('useFreeResources'), 'F1', 'B1')]"
       }
     },
     {
@@ -141,7 +148,7 @@
             "requestedBackupStorageRedundancy": "Local",
             "isLedgerOn": false,
             "availabilityZone": "",
-            "useFreeLimit": true,
+            "useFreeLimit": "[parameters('useFreeResources')]",
             "freeLimitExhaustionBehavior": "AutoPause"
           },
           "sku": {
